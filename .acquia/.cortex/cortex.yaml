@@ -25,3 +25,43 @@ info:
     - url: https://github.com/Widen/i18next-print-keys/blob/master/README.md
       type: Documentation
       name: Project Documentation
+  x-cortex-orca-query:
+    - name: Query for vulnerability dashboard in cortex
+      query: |
+        {
+          "query": {
+            "models": ["VulnerabilityV2"],
+            "type": "object_set",
+            "with": {
+              "operator": "and",
+              "type": "operation",
+              "values": [
+                {
+                  "keys": ["CloudAccount"],
+                  "models": ["CloudAccount"],
+                  "type": "object",
+                  "operator": "has",
+                  "with": {
+                    "key": "Name",
+                    "values": ["AWS - 546349603759 - Cloud Data"],
+                    "type": "str",
+                    "operator": "in"
+                  }
+                },
+                {
+                  "keys": ["Inventory"],
+                  "models": ["Inventory"],
+                  "type": "object",
+                  "operator": "has",
+                  "with": {
+                    "key": "Tags",
+                    "values": ["api"],
+                    "type": "str",
+                    "operator": "in",
+                    "at_key": "service_type"
+                  }
+                }
+              ]
+            }
+          }
+        }
